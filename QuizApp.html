@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+    <style>        
+
+        *{padding: 0;
+             margin: 0;
+            box-sizing: border-box;
+        }
+        body{
+            background-color: rgb(34, 173, 157);
+            font-family: 'Roboto', sans-serif;
+        }
+        .main{
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        #box{
+            width: 40%;
+            /* height: 400px; */
+            padding: 15px;
+            box-shadow: 0px 0px 5px grey ;
+            background-color: white;
+            border-radius: 5px;
+        }
+        .row{
+            width: 100%;
+            margin: 2rem;
+            margin-left: 0;           
+        }
+        .btn{
+            width: 100%;
+            padding: 5px;
+            font-size: 20px;
+            color: white;
+            border: none;
+            border-radius: 5px 0;
+            background-color: rgb(34, 173, 157);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div id="box">
+            <h2 id="quesBox">1) This is the dummmy question</h2>
+            <div class="row">
+                <input type="radio" class="options" value="a" name="option">
+                <label for="option1"> option 1</label>
+            </div>
+            <div class="row">
+                <input type="radio" class="options" value="b" name="option">
+                <label for="option2">option 2</label>
+            </div>
+            <div class="row">
+                <input type="radio" class="options" value="c" name="option">
+                <label for="option3"> option 3</label>
+            </div>
+            <div class="row">
+                <input type="radio" class="options" value="d" name="option">
+                <label for="option4"> option 4</label>
+            </div>
+            <button class="btn" onclick="submitQuiz();"> Submit </button>
+        </div>
+    </div>
+
+
+    <script>
+        const questions = [
+            {
+                'que': 'Which of the following is a markup language?',
+                'a': 'HTML',
+                'b': 'CSS',
+                'c': 'JAVASCRIPT',
+                'd': 'JAVA',
+                'correct': 'a'
+            },
+            {
+                'que': 'In which year javascript was launched?',
+                'a': '1995',
+                'b': '1996',
+                'c': '1994',
+                'd': '1997',
+                'correct': 'a'
+            },
+            {
+                'que': 'CSS stands for?',
+                'a': 'Hypertext Markup Language',
+                'b': 'Cascading Style Sheet',
+                'c': 'Jason Object Notation ',
+                'd': 'none of this',
+                'correct': 'b'
+            }
+        ]
+
+        let index = 0;
+        let total = questions.length;
+        let right = 0, wrong = 0;
+        const question = document.getElementById("quesBox");
+        const optionInputs = document.querySelectorAll('.options')
+        const loadQuestion = () =>{
+            if(index === total){
+                return quizEnd();
+            }
+            reset();
+            const data = questions[index]
+            // console.log(data);
+            quesBox.innerText = `${index+1})  ${data.que}`;
+            optionInputs[0].nextElementSibling.innerText = data.a;
+            optionInputs[1].nextElementSibling.innerText = data.b;
+            optionInputs[2].nextElementSibling.innerText = data.c;
+            optionInputs[3].nextElementSibling.innerText = data.d;
+        }
+        const submitQuiz = () =>{
+            const data = questions[index];
+            const ans = getAnswer() 
+            if(ans === data.correct){
+                right++;
+            }else{
+                wrong++;
+            }
+            index++;
+            loadQuestion();
+            return;
+        }
+
+        const getAnswer = () =>{
+            let answer;
+            optionInputs.forEach(
+                (input) =>{
+                    if(input.checked){
+                        answer = input.value;     
+                    }
+                }
+            )
+            return answer;
+        }
+        const reset = () =>{
+            optionInputs.forEach(
+                (input) =>{
+                    input.checked = false;
+                        
+                }
+            )
+        }
+        
+        // inital call----page load hote hi call  
+        loadQuestion();
+
+        const quizEnd = () =>{
+            document.getElementById("box").innerHTML =
+             `
+            <div style = "text-align:center";> 
+            <h3>Thank you for playing the quiz</h3>
+            <h2 >${right} / ${total} are correct</h2>
+            </div>
+           `;
+        }
+    </script>
+</body>
+</html>
